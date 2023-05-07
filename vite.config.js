@@ -5,14 +5,50 @@ import fs from 'fs/promises';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  server:{
-    port: 4200
-  },
-  resolve:{
-    alias:{
-      'src': resolve(__dirname,'src'),
-    }
-  },
+  // server:{
+  //   port: 4200
+  // },
+  // resolve: {
+  //   alias: {
+  //     src: resolve(__dirname, 'src'),
+  //   },
+  // },
+  // esbuild: {
+  //   loader: 'jsx',
+  //   include: /src\/.*\.jsx?$/,
+  //   exclude: [],
+  // },
+  // optimizeDeps: {
+  //   esbuildOptions: {
+  //     plugins: [
+  //       {
+  //         name: 'load-js-files-as-jsx',
+  //         setup(build) {
+  //           build.onLoad(
+  //               { filter: /src\\.*\.js$/ },
+  //               async (args) => ({
+  //                 loader: 'jsx',
+  //                 contents: await fs.readFile(args.path, 'utf8'),
+  //               })
+  //           );
+  //         },
+  //       },
+  //     ],
+  //   },
+  // },
+
+  // esbuild: {
+  //   loader: 'jsx',
+  // },
+  // optimizeDeps: {
+  //   esbuildOptions: {
+  //     loader: {
+  //       '.js': 'jsx',
+  //     },
+  //   },
+  // },
+
+  plugins: [react()],
   esbuild: {
     loader: "jsx",
     include: /src\/.*\.jsx?$/,
@@ -24,9 +60,9 @@ export default defineConfig({
     esbuildOptions: {
       plugins: [
         {
-          name: "load-movie.js-files-as-jsx",
+          name: "load-js-files-as-jsx",
           setup(build) {
-            build.onLoad({ filter: /src\\.*\.js$/ }, async (args) => ({ // i modified the regex here
+            build.onLoad({ filter: /src\/.*\.js$/ }, async (args) => ({
               loader: "jsx",
               contents: await fs.readFile(args.path, "utf8"),
             }));
@@ -35,5 +71,4 @@ export default defineConfig({
       ],
     },
   },
-  plugins: [react()],
 })

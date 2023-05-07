@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BallTriangle } from  'react-loader-spinner'
-import Loading from "src/components/loading/Loading.js";
+import Loading from "../../loading/Loading.js";
 import './Movie.scss'
 
 function Movie() {

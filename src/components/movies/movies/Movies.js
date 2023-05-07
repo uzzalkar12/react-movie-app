@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import { useNavigate  } from "react-router-dom";
-import Movie from "src/components/movies/movie/Movie.js";
 import './Movies.scss'
 import axios from 'axios'
-import Loading from "src/components/loading/Loading.js";
+import Loading from "../../loading/Loading.js";
 
 function Movies() {
     const [movies, setMovies] = useState([])
@@ -11,6 +10,8 @@ function Movies() {
     const navigate = useNavigate();
     const [searchInput, setSearchInput] = useState('');
     const [searchedMovies, setSearchedMovies] = useState([])
+
+    const elementRef = useRef();
 
     const getMovies = async () => {
         setLoading(true)
@@ -36,10 +37,12 @@ function Movies() {
     }
     const searchMovies = async (e) => {
         if (e.key === "Enter") {
-            // e.target.blur();
+            const inputValue = e.target.value
+            setSearchInput(inputValue)
             setLoading(true)
+            setSearchedMovies([])
             const data = axios.get(
-                `https://api.themoviedb.org/3/search/movie?api_key=f65d02ecee3c79a45518b9bcb6ccc7c8&language=en-US&page=1&query=${searchInput}`
+                `https://api.themoviedb.org/3/search/movie?api_key=f65d02ecee3c79a45518b9bcb6ccc7c8&language=en-US&page=1&query=${inputValue}`
             )
             const result = await data
             result.data.results.forEach((movie) => {
@@ -51,13 +54,14 @@ function Movies() {
     const clearSearch = () => {
         setSearchInput('')
         setSearchedMovies([])
+        document.getElementById("searchInput").value = ''
     }
 
     return (
         <div className="home">
             {/*Search*/}
             <div className="container search">
-                <input value={searchInput} onChange={e => setSearchInput(e.target.value)} onKeyUp={(e) => searchMovies(e)} type="text" placeholder="Search"/>
+                <input onKeyUp={(e) => searchMovies(e)} type="text" placeholder="Search" id="searchInput"/>
                 {
                     searchInput !== '' ?
                         (<button onClick={clearSearch} className="button">Clear Search</button>)
