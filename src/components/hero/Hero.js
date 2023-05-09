@@ -1,4 +1,3 @@
-import React from 'react'
 import movieHero from '../../assets/imgs/movieHero.jpg'
 import './Hero.scss'
 
